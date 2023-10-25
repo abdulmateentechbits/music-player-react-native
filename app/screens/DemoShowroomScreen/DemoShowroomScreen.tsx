@@ -3,6 +3,7 @@ import {
   ActivityIndicator,
   FlatList,
   SafeAreaView,
+  View,
   ViewStyle,
 } from "react-native"
 import { Screen, Text } from "../../components"
@@ -71,13 +72,13 @@ export const DemoShowroomScreen: FC<DemoTabScreenProps<"DemoShowroom">> =
       >
         {/* play list */}
 
-        <PlayList />
+        {/* <PlayList /> */}
 
-        <DemoDivider />
-        <DemoDivider />
-        <DemoDivider />
-
+        <DemoDivider />       
         <MusicPlayer />
+        <View style={{height:300,}} />
+        <DemoDivider />
+        <DemoDivider />
       </Screen>
     )
   }

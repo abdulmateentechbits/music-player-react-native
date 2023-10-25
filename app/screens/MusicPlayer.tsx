@@ -33,7 +33,6 @@ const MusicPlayer = () => {
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: () => true,
         onPanResponderMove: (event, gestureState) => {
-            console.log("🚀 ~ file: MusicPlayer.tsx:37 ~ MusicPlayer ~ event:", event)
             
             // Determine the horizontal swipe direction
             if (gestureState.dx > 100) {
@@ -62,6 +61,7 @@ const MusicPlayer = () => {
             </View>
         )
     }
+    
     return (
         <View style={styles.container}>
             <FlatList
@@ -82,11 +82,11 @@ export default MusicPlayer
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex:1,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#001d23',
-        marginTop:30
+        marginTop:0
     },
     listArtWrapper: {
         width: width,

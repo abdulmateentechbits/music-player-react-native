@@ -1,19 +1,42 @@
-import TrackPlayer, { Event, RepeatMode } from 'react-native-track-player';
+import TrackPlayer, { AppKilledPlaybackBehavior, Capability, Event, RepeatMode } from 'react-native-track-player';
 import { playListData } from './app/utils/constant';
 
 export async function setupPlayer() {
     let isSetup = false;
     try {
-        await TrackPlayer.getActiveTrackIndex()
-        isSetup = true;
-    } catch (error) {
-        await TrackPlayer.setupPlayer();
-        isSetup = true;
-
-    } finally {
-        return isSetup;
+      await TrackPlayer.getActiveTrackIndex();
+      isSetup = true;
     }
-}
+    catch {
+      await TrackPlayer.setupPlayer();
+      await TrackPlayer.updateOptions({
+        android: {
+          appKilledPlaybackBehavior:
+            AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification,
+        },
+        capabilities: [
+          Capability.Play,
+          Capability.Pause,
+          Capability.SkipToNext,
+          Capability.SkipToPrevious,
+          Capability.SeekTo,
+        ],
+        compactCapabilities: [
+          Capability.Play,
+          Capability.Pause,
+          Capability.SkipToNext,
+        ],
+        progressUpdateEventInterval: 2,
+
+      });
+  
+      isSetup = true;
+    }
+    finally {
+      return isSetup;
+    }
+  }
+  
 
 export async function addTrack() {
     await TrackPlayer.add(playListData);
@@ -21,6 +44,7 @@ export async function addTrack() {
 }
 
 export async function playbackService() {
+
     TrackPlayer.addEventListener(Event.RemotePlay, () => {
         TrackPlayer.play();
     })
@@ -33,5 +57,9 @@ export async function playbackService() {
     TrackPlayer.addEventListener(Event.RemoteNext, () => {
         TrackPlayer.skipToNext();
     })
+
+    TrackPlayer.addEventListener(Event.RemoteSeek, async (position) => {
+        await TrackPlayer.seekTo(position.position)
+      });
 
 }

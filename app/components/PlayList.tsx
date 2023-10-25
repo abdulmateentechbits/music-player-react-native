@@ -7,26 +7,20 @@ import {
 } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import TrackPlayer, { Event, Track, useTrackPlayerEvents } from 'react-native-track-player'
+import useLoadPlaylist from 'app/utils/useLoadPlaylist';
 
 
 function PlayList() {
-    const [queue, setQueue] = useState<Track[]>();
     const [currentTrack, setCurrentTrack] = useState(0);
-
-    async function loadPlaylist() {
-        const queue = await TrackPlayer.getQueue();
-        setQueue(queue);
-    }
-
-    useEffect(() => {
-        loadPlaylist();
-    }, []);
+    const { queue } = useLoadPlaylist();
 
 
     useTrackPlayerEvents([Event.PlaybackActiveTrackChanged], async (event) => {
         let currentTrackIndex = event.index;
         setCurrentTrack(currentTrackIndex);
-    })
+    });
+
+
 
     return (
         <View>
@@ -69,8 +63,8 @@ export default PlayList
 
 const styles = StyleSheet.create({
     playlist: {
-        marginTop: 40,
-        marginBottom: 40
+        marginTop: 5,
+        marginBottom:5
     },
     playlistItem: {
         fontSize: 16,

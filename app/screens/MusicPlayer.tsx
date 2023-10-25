@@ -12,7 +12,6 @@ const MusicPlayer = () => {
     const [track, setTrack] = useState<Track | null>();
 
     useTrackPlayerEvents([Event.PlaybackActiveTrackChanged], async event => {
-        console.log("🚀 ~ file: MusicPlayer.tsx:15 ~ MusicPlayer ~ event:", event.type)
         
         switch (event.type) {
             case Event.PlaybackActiveTrackChanged:

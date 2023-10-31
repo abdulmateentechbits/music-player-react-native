@@ -28,6 +28,9 @@ import { ErrorBoundary } from "./screens/ErrorScreen/ErrorBoundary"
 import * as storage from "./utils/storage"
 import { customFontsToLoad } from "./theme"
 import Config from "./config"
+import * as MediaLibrary from 'expo-media-library';
+
+
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
 
@@ -66,6 +69,30 @@ function App(props: AppProps) {
     onNavigationStateChange,
     isRestored: isNavigationStateRestored,
   } = useNavigationPersistence(storage, NAVIGATION_PERSISTENCE_KEY)
+
+  React.useEffect(() => {
+    const subscription = MediaLibrary.addListener(handleMediaLibraryChange);
+    
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
+  const handleMediaLibraryChange = (event) => {
+    console.log("🚀 ~ file: DemoShowroomScreen.tsx:65 ~ handleMediaLibraryChange ~ event:", event)
+    if (event.hasIncrementalChanges) {
+      // Check for deleted, inserted, or updated assets
+      if (event.deletedAssets.length > 0) {
+        // Handle deleted assets
+      }
+      if (event.insertedAssets.length > 0) {
+        // Handle inserted assets
+      }
+      if (event.updatedAssets.length > 0) {
+        // Handle updated assets
+      }
+    }
+  };
 
   const [areFontsLoaded] = useFonts(customFontsToLoad)
 

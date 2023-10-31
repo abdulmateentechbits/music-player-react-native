@@ -14,6 +14,6 @@ function IgniteApp() {
 }
 
 AppRegistry.registerComponent("awsAmplifyAuthentication", () => IgniteApp)
-TrackPlayer.registerPlaybackService(async () => playbackService());
+TrackPlayer.registerPlaybackService(() => playbackService);
 
 export default App

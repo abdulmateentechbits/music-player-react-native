@@ -6,7 +6,9 @@ import {
   SafeAreaView,
   View,
   ViewStyle,
-  PermissionsAndroid
+  PermissionsAndroid,
+  Platform,
+  Linking
 } from "react-native"
 import { Screen, Text } from "../../components"
 import { DemoTabScreenProps } from "../../navigators/DemoNavigator"
@@ -17,7 +19,7 @@ import TrackPlayer, { Event, Track, useTrackPlayerEvents } from "react-native-tr
 import { DemoDivider } from "./DemoDivider"
 import PlayList from "app/components/PlayList"
 import * as MediaLibrary from 'expo-media-library';
-import * as Permissions from 'expo-permissions';
+import { PERMISSIONS, request } from "react-native-permissions"
 
 export const DemoShowroomScreen: FC<DemoTabScreenProps<"DemoShowroom">> =
   function DemoShowroomScreen(_props) {
@@ -28,32 +30,23 @@ export const DemoShowroomScreen: FC<DemoTabScreenProps<"DemoShowroom">> =
     const [isPlayerReady, setIsPlayerReady] = useState(false);
     const [queue, setQueue] = useState<Track[]>();
     const [currentTrack, setCurrentTrack] = useState(0);
+    const persmission = MediaLibrary.usePermissions()
     
     useEffect(() => {
       setup();
-      checkPermission();
+  
     }, []);
 
-    const checkPermission = async () => {
-      const { status } = await MediaLibrary.getPermissionsAsync();
-      setHasPermission(status === 'granted');
-    };
-    
-    
-    
-    
-    
     
    
-
-
+   
     useTrackPlayerEvents([Event.PlaybackActiveTrackChanged], async (event) => {
       let currentTrackIndex = event.index;
       if (currentTrackIndex) {
         let currentIndex = await TrackPlayer.getActiveTrackIndex();
         setCurrentTrack(currentIndex);
       }
-    })
+    });
 
     async function setup() {
       let isSetup = await setupPlayer()
@@ -70,8 +63,23 @@ export const DemoShowroomScreen: FC<DemoTabScreenProps<"DemoShowroom">> =
       setIsPlayerReady(isSetup)
     }
 
-
-
+    const handleMediaLibraryChange = (event) => {
+      console.log("🚀 ~ file: DemoShowroomScreen.tsx:65 ~ handleMediaLibraryChange ~ event:", event)
+      if (event.hasIncrementalChanges) {
+        // Check for deleted, inserted, or updated assets
+        if (event.deletedAssets.length > 0) {
+          // Handle deleted assets
+        }
+        if (event.insertedAssets.length > 0) {
+          // Handle inserted assets
+        }
+        if (event.updatedAssets.length > 0) {
+          // Handle updated assets
+        }
+      }
+    };
+    
+    
     if (!isPlayerReady) {
       return (
         <SafeAreaView style={$container}>

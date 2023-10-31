@@ -54,6 +54,16 @@ export function DemoNavigator() {
           ),
         }}
       />
+      {/* <Tab.Screen
+        name="DemoCommunity"
+        component={DemoCommunityScreen}
+        options={{
+          tabBarLabel: translate("demoNavigator.componentsTab"),
+          tabBarIcon: ({ focused }) => (
+            <Icon icon="components" color={focused && colors.tint} size={30} />
+          ),
+        }}
+      /> */}
       
     </Tab.Navigator>
   )
